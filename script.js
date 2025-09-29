@@ -2,6 +2,7 @@
 
 (function () {
     const NUM_STUDENTS = 30;
+    const STORAGE_KEY = 'student-checklist-data';
     const checklistBody = document.getElementById('checklistBody');
     const attendanceSummary = document.getElementById('attendanceSummary');
     const headerRow = document.getElementById('headerRow');
@@ -12,11 +13,69 @@
 
     // 초기 항목 구성: 출석, 숙제, 준비물
     // 첫 번째 항목(출석)은 삭제 불가로 보호
-    const itemList = [
+    const defaultItemList = [
         { key: 'attend', label: '출석', removable: false },
         { key: 'homework', label: '숙제', removable: true },
         { key: 'supplies', label: '준비물', removable: true },
     ];
+
+    // 로컬 스토리지에서 데이터 로드
+    function loadFromStorage() {
+        try {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                return {
+                    itemList: data.itemList || defaultItemList,
+                    checklistData: data.checklistData || {}
+                };
+            }
+        } catch (error) {
+            console.error('로컬 스토리지 로드 실패:', error);
+        }
+        return {
+            itemList: [...defaultItemList],
+            checklistData: {}
+        };
+    }
+
+    // 로컬 스토리지에 데이터 저장
+    function saveToStorage() {
+        try {
+            const data = {
+                itemList: itemList,
+                checklistData: getCurrentChecklistData()
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (error) {
+            console.error('로컬 스토리지 저장 실패:', error);
+        }
+    }
+
+    // 현재 체크리스트 데이터 수집
+    function getCurrentChecklistData() {
+        const data = {};
+        const checkboxes = checklistBody.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                data[checkbox.name] = true;
+            }
+        });
+        return data;
+    }
+
+    // 저장된 체크리스트 데이터 적용
+    function applyChecklistData(checklistData) {
+        Object.keys(checklistData).forEach(name => {
+            const checkbox = checklistBody.querySelector(`input[name="${name}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        });
+    }
+
+    // 로컬 스토리지에서 데이터 로드
+    const { itemList, checklistData } = loadFromStorage();
 
     function createCell(content) {
         const td = document.createElement('td');
@@ -39,6 +98,8 @@
     function updateAttendanceSummary() {
         const presentCount = checklistBody.querySelectorAll('input[name^="attend-"]:checked').length;
         attendanceSummary.textContent = `${presentCount} / ${NUM_STUDENTS}`;
+        // 출석 상태 변경 시 로컬 스토리지 저장
+        saveToStorage();
     }
 
     function buildHeader() {
@@ -130,6 +191,8 @@
             tr.appendChild(createCell(checkbox));
         });
         updateItemCompletionState(newItem.key);
+        // 항목 추가 시 로컬 스토리지 저장
+        saveToStorage();
     }
 
     function removeItemColumn(key) {
@@ -156,6 +219,8 @@
             }
         });
         updateAttendanceSummary();
+        // 항목 삭제 시 로컬 스토리지 저장
+        saveToStorage();
     }
 
     function bulkSetColumn(key, checked) {
@@ -183,6 +248,8 @@
         } else {
             th.classList.remove('completed');
         }
+        // 항목 완료 상태 변경 시 로컬 스토리지 저장
+        saveToStorage();
     }
 
     // UI 이벤트: 새 항목 추가
@@ -206,6 +273,8 @@
     // 초기 렌더링
     buildHeader();
     buildTableRows();
+    // 저장된 체크리스트 데이터 적용
+    applyChecklistData(checklistData);
     // 초기 각 항목의 완료 상태 반영
     itemList.forEach((i) => updateItemCompletionState(i.key));
 })();
