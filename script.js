@@ -98,8 +98,6 @@
     function updateAttendanceSummary() {
         const presentCount = checklistBody.querySelectorAll('input[name^="attend-"]:checked').length;
         attendanceSummary.textContent = `${presentCount} / ${NUM_STUDENTS}`;
-        // 출석 상태 변경 시 로컬 스토리지 저장
-        saveToStorage();
     }
 
     function buildHeader() {
@@ -170,7 +168,6 @@
             fragment.appendChild(tr);
         }
         checklistBody.appendChild(fragment);
-        updateAttendanceSummary();
     }
 
     function addItemColumn(label) {
@@ -275,6 +272,8 @@
     buildTableRows();
     // 저장된 체크리스트 데이터 적용
     applyChecklistData(checklistData);
+    // 출석 현황 업데이트 (체크박스 상태 복원 후)
+    updateAttendanceSummary();
     // 초기 각 항목의 완료 상태 반영
     itemList.forEach((i) => updateItemCompletionState(i.key));
 })();
