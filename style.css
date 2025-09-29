@@ -1,0 +1,190 @@
+/* 기본 리셋 및 폰트 */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+    margin: 0;
+    font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    color: #34495e;
+    background: #f7f9fb;
+}
+
+.app-header {
+    padding: 24px 16px;
+    text-align: center;
+    background: linear-gradient(135deg, #f0f4ff, #f9f7ff);
+    border-bottom: 1px solid #e6ecf5;
+}
+.app-header h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.container {
+    max-width: 960px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0 16px;
+}
+
+.btn {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid #dbe7ff;
+    background: #f3f7ff;
+    color: #264b7f;
+    cursor: pointer;
+}
+.btn:hover { background: #eaf1ff; }
+.btn.primary { background: #e6f3ff; border-color: #cfe6ff; color: #1f3b57; }
+.btn.subtle { background: #f8f9fb; border-color: #e6ecf5; color: #5b6b7b; }
+
+.add-form { display: none; }
+.add-form[aria-hidden="false"] { display: inline-flex; align-items: center; gap: 8px; }
+.add-form input {
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid #dbe1ea;
+    background: #ffffff;
+}
+
+.summary {
+    margin-bottom: 16px;
+}
+.summary-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #eaf6ff; /* 파스텔 블루 */
+    color: #1f3b57;
+    border: 1px solid #d7ebff;
+}
+.summary-label {
+    font-weight: 600;
+}
+.summary-value {
+    font-weight: 700;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e6ecf5;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.checklist-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.checklist-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f2f6ff; /* 파스텔 블루 헤더 */
+    color: #2c3e50;
+    text-align: center;
+    font-weight: 700;
+    padding: 12px 8px;
+    border-bottom: 1px solid #e1e8f0;
+}
+.checklist-table thead th.item-col {
+    position: relative;
+}
+.checklist-table thead th.item-col.completed {
+    background: #e9fbf0; /* 파스텔 그린 */
+    color: #246b43;
+    box-shadow: inset 0 -2px 0 #c9efd9;
+}
+.col-remove-btn {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #8aa3c2;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .15s ease;
+}
+.checklist-table thead th.item-col:hover .col-remove-btn { opacity: 1; }
+.col-remove-btn:hover { background: #eaf1ff; border-color: #cfe1ff; color: #345a86; }
+
+.col-complete-btn {
+    position: absolute;
+    top: 50%;
+    right: 32px;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #7aa88c;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .15s ease;
+}
+.checklist-table thead th.item-col:hover .col-complete-btn { opacity: 1; }
+.col-complete-btn:hover { background: #e9fbf0; border-color: #cfeede; color: #2f6d4c; }
+
+.col-uncomplete-btn {
+    position: absolute;
+    top: 50%;
+    right: 58px;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #c08a8a;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .15s ease;
+}
+.checklist-table thead th.item-col:hover .col-uncomplete-btn { opacity: 1; }
+.col-uncomplete-btn:hover { background: #ffecec; border-color: #ffd3d3; color: #8a2f2f; }
+.checklist-table tbody td,
+.checklist-table tbody th {
+    padding: 10px 8px;
+    text-align: center;
+    border-bottom: 1px solid #f0f2f5;
+}
+.checklist-table tbody tr:nth-child(odd) {
+    background: #fcfdff;
+}
+.checklist-table tbody tr:hover {
+    background: #f8fbff;
+}
+
+/* 체크박스 스타일 (심플) */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #6fb1ff; /* 파스텔 블루 */
+}
+
+/* 접근성 보조 텍스트 숨김 */
+.visually-hidden {
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+}
+
+

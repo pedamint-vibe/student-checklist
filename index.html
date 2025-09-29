@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학생 체크리스트 관리 도구</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="app-header">
+        <h1>학생 체크리스트 관리 도구</h1>
+    </header>
+
+    <main class="container">
+        <section class="summary" aria-live="polite">
+            <div class="summary-card">
+                <span class="summary-label">전체 출석 현황</span>
+                <span class="summary-value" id="attendanceSummary">0 / 30</span>
+            </div>
+        </section>
+
+        <section class="controls" aria-label="체크리스트 항목 추가">
+            <button id="addItemBtn" class="btn">새 항목 추가</button>
+            <form id="addItemForm" class="add-form" aria-hidden="true">
+                <label for="newItemName" class="visually-hidden">새 항목명</label>
+                <input id="newItemName" type="text" placeholder="항목명 입력 (예: 지각)" autocomplete="off" />
+                <button type="submit" class="btn primary">추가</button>
+                <button type="button" id="cancelAdd" class="btn subtle">취소</button>
+            </form>
+        </section>
+
+        <section>
+            <div class="table-wrapper">
+                <table class="checklist-table" aria-describedby="tableDesc">
+                    <caption id="tableDesc" class="visually-hidden">1번부터 30번까지 학생의 체크리스트(출석, 숙제, 준비물)를 표로 제공합니다.</caption>
+                    <thead>
+                        <tr id="headerRow">
+                            <th scope="col">번호</th>
+                            <!-- JS가 항목 헤더를 생성합니다. -->
+                        </tr>
+                    </thead>
+                    <tbody id="checklistBody">
+                        <!-- JS가 1~30행을 생성합니다. -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
